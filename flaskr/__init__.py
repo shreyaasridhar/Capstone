@@ -3,7 +3,7 @@ from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import json
-from models import setup_db, Ingredient, Dish
+from models import setup_db, Ingredient, Dish, drop_create_all
 
 from auth import AuthError, requires_auth
 
@@ -30,6 +30,7 @@ def create_app(test_config=None):
 
 
 APP = create_app()
+drop_create_all()
 
 
 @APP.after_request
