@@ -104,7 +104,7 @@ def update_dish(dish_id):
     dish.update()
     return jsonify({
         "success": True,
-        "dish": Dish.query.filter(Dish.id == dish_id).one_or_none()
+        "dish": Dish.query.filter(Dish.id == dish_id).one_or_none().format()
     })
 
 
@@ -125,7 +125,7 @@ def update_ingredient(ingredient_id):
     ingredient.update()
     return jsonify({
         "success": True,
-        "ingredient": Ingredient.query.filter(Ingredient.id == ingredient_id).one_or_none()
+        "ingredient": Ingredient.query.filter(Ingredient.id == ingredient_id).one_or_none().format()
     })
 
 
