@@ -4,6 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from models import setup_db
 
+from auth import AuthError, requires_auth
+
 
 def create_app(test_config=None):
     # create and configure the app
@@ -19,7 +21,7 @@ APP = create_app()
 
 # Error Handling
 
-@app.errorhandler(400)
+@APP.errorhandler(400)
 def bad_request(error):
     return jsonify({
         "success": False,
@@ -28,7 +30,7 @@ def bad_request(error):
     }), 400
 
 
-@app.errorhandler(404)
+@APP.errorhandler(404)
 def Notfound(error):
     return jsonify({
         "success": True,
@@ -37,7 +39,7 @@ def Notfound(error):
     }), 404
 
 
-@app.errorhandler(422)
+@APP.errorhandler(422)
 def unprocessable(error):
     return jsonify({
         "success": False,
@@ -46,7 +48,7 @@ def unprocessable(error):
     }), 422
 
 
-@app.errorhandler(AuthError)
+@APP.errorhandler(AuthError)
 def autherror(error):
     return jsonify({
         "success": True,
