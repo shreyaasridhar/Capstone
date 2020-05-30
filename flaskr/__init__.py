@@ -129,6 +129,30 @@ def update_ingredient(ingredient_id):
     })
 
 
+@APP.route('/dishes/<int:dish_id>', methods=["DELETE"])
+def delete_dishes(dish_id):
+    dish = Dish.query.filter(Dish.id == dish_id).one_or_none()
+    if not dish:
+        abort(404)
+    dish.delete()
+    return jsonify({
+        "success": True,
+        "delete": dish_id
+    })
+
+
+@APP.route('/ingredients/<int:ingredient_id>', methods=["DELETE"])
+def delete_ingredient(ingredient_id):
+    ingredient = Ingredient.query.filter(
+        Ingredient.id == ingredient_id).one_or_none()
+    if not ingredient:
+        abort(404)
+    ingredient.delete()
+    return jsonify({
+        "success": True,
+        "delete": ingredient_id
+    })
+
 # Error Handling
 @APP.errorhandler(400)
 def bad_request(error):
