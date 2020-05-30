@@ -25,3 +25,55 @@ def setup_db(app, database_path=database_path):
     db.app = app
     db.init_app(app)
     db.create_all()
+
+
+class Ingredient(db.Model):
+    __tablename__ = "ingredients"
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    image_link = Column(String)
+    color = Column(String)
+
+    def __init__(self, name, image_link, color):
+        self.name = name
+        self.image_link = image_link
+        self.color = color
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def format(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "image_link": self.image_link,
+            "color": self.color
+        }
+
+
+class Dish(db.Model):
+    __tablename__ = "dishes"
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    image_link = Column(String)
+    ingredients = db.relationship(
+        'Ingredients', backref='dishes', lazy='dynamic')
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
