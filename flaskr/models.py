@@ -64,8 +64,12 @@ class Dish(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     image_link = Column(String)
-    ingredients = db.relationship(
-        'Ingredients', backref='dishes', lazy='dynamic')
+    # ingredients = db.relationship('Ingredients', backref='dishes', lazy='dynamic')
+    ingredients = Column(String, nullable=False)
+
+    def __init__(self, name, image_link):
+        self.name = name
+        self.image_link = image_link
 
     def insert(self):
         db.session.add(self)
@@ -77,3 +81,10 @@ class Dish(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+    def format(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "image_link": self.image_link
+        }
