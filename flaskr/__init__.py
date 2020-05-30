@@ -88,6 +88,47 @@ def add_new_ingredient():
     })
 
 
+@APP.route('/dishes/<int:dish_id>', methods=['PATCH'])
+def update_dish(dish_id):
+    dish = Dish.query.filter(Dish.id == dish_id).one_or_none()
+    if not dish:
+        abort(404)
+    data = request.get_json()
+    if 'name' in data:
+        setattr(dish, 'name', data['name'])
+    if 'image_link' in data:
+        setattr(dish, 'image_link', data['image_link'])
+    if 'ingredients' in data:
+        setattr(dish, 'ingredients', json.dumps(data['ingredients']))
+
+    dish.update()
+    return jsonify({
+        "success": True,
+        "dish": Dish.query.filter(Dish.id == dish_id).one_or_none()
+    })
+
+
+@APP.route('/ingredients/<int:ingredient_id>', methods=['PATCH'])
+def update_ingredient(ingredient_id):
+    ingredient = Ingredient.query.filter(
+        Ingredient.id == ingredient_id).one_or_none()
+    if not ingredient:
+        abort(404)
+    data = request.get_json()
+    if 'name' in data:
+        setattr(ingredient, 'name', data['name'])
+    if 'image_link' in data:
+        setattr(ingredient, 'image_link', data['image_link'])
+    if 'color' in data:
+        setattr(ingredient, 'color', data['color'])
+
+    ingredient.update()
+    return jsonify({
+        "success": True,
+        "ingredient": Ingredient.query.filter(Ingredient.id == ingredient_id).one_or_none()
+    })
+
+
 # Error Handling
 @APP.errorhandler(400)
 def bad_request(error):
