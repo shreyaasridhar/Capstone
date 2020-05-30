@@ -88,5 +88,5 @@ class Dish(db.Model):
             "id": self.id,
             "name": self.name,
             "image_link": self.image_link,
-            "ingredients": self.ingredients
+            "ingredients": json.loads(self.ingredients)
         }

@@ -15,9 +15,9 @@ def paginate(request, selection):
     start = (page - 1) * ITEMS_PER_PAGE
     end = start + ITEMS_PER_PAGE
 
-    questions = [question.format() for question in selection]
+    item = [item.format() for item in selection]
 
-    return questions[start:end]
+    return item[start:end]
 
 
 def create_app(test_config=None):
@@ -56,7 +56,7 @@ def view_ingredients():
 
 @APP.route('/dishes')
 def view_dishes():
-    selection = Dish.query.order_by(Dselection=Dish.id).all()
+    selection = Dish.query.order_by(Dish.id).all()
     current_dishes = paginate(request, selection)
     if len(current_dishes) == 0:
         abort(404)
