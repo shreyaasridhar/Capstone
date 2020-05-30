@@ -67,9 +67,10 @@ class Dish(db.Model):
     # ingredients = db.relationship('Ingredients', backref='dishes', lazy='dynamic')
     ingredients = Column(String, nullable=False)
 
-    def __init__(self, name, image_link):
+    def __init__(self, name, image_link, ingredients):
         self.name = name
         self.image_link = image_link
+        self.ingredients = ingredients
 
     def insert(self):
         db.session.add(self)
@@ -86,5 +87,6 @@ class Dish(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "image_link": self.image_link
+            "image_link": self.image_link,
+            "ingredients": self.ingredients
         }

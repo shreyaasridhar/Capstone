@@ -2,6 +2,7 @@ import os
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+import json
 from models import setup_db, Ingredient, Dish
 
 from auth import AuthError, requires_auth
@@ -64,6 +65,28 @@ def view_dishes():
         'dishes': current_dishes,
         "total_dishes": len(selection)
     })
+
+
+@APP.route('/dishes', methods=['POST'])
+def add_new_dishes():
+    data = request.get_json()
+    dish = Dish(data['name'], data['image_link'],
+                json.dumps(data['ingredients']))
+    dish.insert()
+    return jsonify({
+        'success': True
+    })
+
+
+@APP.route('/ingredients', methods=['POST'])
+def add_new_ingredient():
+    data = request.get_json()
+    ingredient = Ingredient(data['name'], data['image_link'], data['color'])
+    ingredient.insert()
+    return jsonify({
+        'success': True
+    })
+
 
 # Error Handling
 @APP.errorhandler(400)
