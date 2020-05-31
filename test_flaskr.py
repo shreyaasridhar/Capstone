@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import jsonify
 from flaskr import create_app
 from models import setup_db, Ingredient, Dish, drop_create_all
+unittest.TestLoader.sortTestMethodsUsing = None
 
 
 class RestaurantTestCase(unittest.TestCase):
@@ -86,14 +87,14 @@ class RestaurantTestCase(unittest.TestCase):
 
     # POST /ingredients
 
-    def insert_ingredients(self):
+    def test_insert_ingredients(self):
         res = self.client.post(
             '/ingredients', headers=self.head_chef, json=self.new_ingredient)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertTrue(data["success"])
 
-    def insert_ingredients_unauthorized(self):
+    def test_insert_ingredients_unauthorized(self):
         res = self.client.post(
             '/ingredients', headers=self.sous_chef, json=self.new_ingredient)
         data = json.loads(res.data)
@@ -103,14 +104,14 @@ class RestaurantTestCase(unittest.TestCase):
 
     # POST /dishes
 
-    def insert_dishes(self):
+    def test_insert_dishes(self):
         res = self.client.post(
             '/dishes', headers=self.manager, json=self.new_dish)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertTrue(data["success"])
 
-    def insert_dishes_unauthorized(self):
+    def test_insert_dishes_unauthorized(self):
         res = self.client.post(
             '/dishes', headers=self.head_chef, json=self.new_dish)
         data = json.loads(res.data)
@@ -174,13 +175,13 @@ class RestaurantTestCase(unittest.TestCase):
 
     # DELETE / ingredients/<int: ingredient_id >
 
-    def test_delete_ingredient(self):
+    def test_z_delete_ingredient(self):
         res = self.client.delete('/ingredients/1', headers=self.manager)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data["delete"], 1)
 
-    def test_delete_ingredient_unauthorized(self):
+    def test_z_delete_ingredient_unauthorized(self):
         res = self.client.delete('/ingredients/1', headers=self.sous_chef)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 403)
@@ -189,13 +190,13 @@ class RestaurantTestCase(unittest.TestCase):
 
     # DELETE /dishes/<int:dish_id>
 
-    def test_delete_dish(self):
+    def test_z_delete_dish(self):
         res = self.client.delete('/dishes/1', headers=self.manager)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data["delete"], 1)
 
-    def test_delete_dish_unauthorized(self):
+    def test_z_delete_dish_unauthorized(self):
         res = self.client.delete('/dishes/1', headers=self.sous_chef)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 403)
