@@ -5,10 +5,11 @@ from jose import jwt
 from urllib.request import urlopen
 import os
 
+URL_formed = 'https://lebistro.auth0.com/authorize?audience=bestfood&response_type=token&client_id=joNomT31fdxcaR1720y9uKGC0zKaJQb3&redirect_uri=http://localhost:8080'
 
-AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN')
+AUTH0_DOMAIN = os.getenv('AUTH0_DOMAIN')
 ALGORITHMS = ['RS256']
-API_AUDIENCE = os.environ.get('API_AUDIENCE')
+API_AUDIENCE = os.getenv('API_AUDIENCE')
 
 # AuthError Exception
 
