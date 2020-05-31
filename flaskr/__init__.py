@@ -30,7 +30,7 @@ def create_app(test_config=None):
 
 
 APP = create_app()
-drop_create_all()
+# drop_create_all()
 
 
 @APP.after_request
@@ -43,33 +43,36 @@ def after_request(response):
 
 
 @APP.route('/ingredients')
-def view_ingredients():
+@requires_auth("GET:ingredients")
+def view_ingredients(jwt):
     selection = Ingredient.query.order_by(Ingredient.id).all()
-    current_ingredients = paginate(request, selection)
-    if len(current_ingredients) == 0:
-        abort(404)
+    # current_ingredients = paginate(request, selection)
+    # if len(current_ingredients) == 0:
+    #     abort(404)
     return jsonify({
         'success': True,
-        'ingredients': current_ingredients,
+        'ingredients': [item.format() for item in selection],
         "total_ingredients": len(selection)
     })
 
 
 @APP.route('/dishes')
-def view_dishes():
+@requires_auth("GET:dishes")
+def view_dishes(jwt):
     selection = Dish.query.order_by(Dish.id).all()
-    current_dishes = paginate(request, selection)
-    if len(current_dishes) == 0:
-        abort(404)
+    # current_dishes = paginate(request, selection)
+    # if len(current_dishes) == 0:
+    #     abort(404)
     return jsonify({
         'success': True,
-        'dishes': current_dishes,
+        'dishes': [item.format() for item in selection],
         "total_dishes": len(selection)
     })
 
 
 @APP.route('/dishes', methods=['POST'])
-def add_new_dishes():
+@requires_auth("POST:dishes")
+def add_new_dishes(jwt):
     data = request.get_json()
     dish = Dish(data['name'], data['image_link'],
                 json.dumps(data['ingredients']))
@@ -80,7 +83,8 @@ def add_new_dishes():
 
 
 @APP.route('/ingredients', methods=['POST'])
-def add_new_ingredient():
+@requires_auth("POST:ingredients")
+def add_new_ingredient(jwt):
     data = request.get_json()
     ingredient = Ingredient(data['name'], data['image_link'], data['color'])
     ingredient.insert()
@@ -90,7 +94,8 @@ def add_new_ingredient():
 
 
 @APP.route('/dishes/<int:dish_id>', methods=['PATCH'])
-def update_dish(dish_id):
+@requires_auth("PATCH:dishes")
+def update_dish(jwt, dish_id):
     dish = Dish.query.filter(Dish.id == dish_id).one_or_none()
     if not dish:
         abort(404)
@@ -110,7 +115,8 @@ def update_dish(dish_id):
 
 
 @APP.route('/ingredients/<int:ingredient_id>', methods=['PATCH'])
-def update_ingredient(ingredient_id):
+@requires_auth("PATCH:ingredients")
+def update_ingredient(jwt, ingredient_id):
     ingredient = Ingredient.query.filter(
         Ingredient.id == ingredient_id).one_or_none()
     if not ingredient:
@@ -131,7 +137,8 @@ def update_ingredient(ingredient_id):
 
 
 @APP.route('/dishes/<int:dish_id>', methods=["DELETE"])
-def delete_dishes(dish_id):
+@requires_auth("DELETE:dishes")
+def delete_dishes(jwt, dish_id):
     dish = Dish.query.filter(Dish.id == dish_id).one_or_none()
     if not dish:
         abort(404)
@@ -143,7 +150,8 @@ def delete_dishes(dish_id):
 
 
 @APP.route('/ingredients/<int:ingredient_id>', methods=["DELETE"])
-def delete_ingredient(ingredient_id):
+@requires_auth("DELETE:ingredients")
+def delete_ingredient(jwt, ingredient_id):
     ingredient = Ingredient.query.filter(
         Ingredient.id == ingredient_id).one_or_none()
     if not ingredient:
@@ -184,6 +192,7 @@ def unprocessable(error):
 
 @APP.errorhandler(AuthError)
 def autherror(error):
+    print(error.error)
     return jsonify({
         "success": True,
         "error": error.status_code,
