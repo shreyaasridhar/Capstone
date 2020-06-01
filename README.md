@@ -239,6 +239,38 @@ To run the test file [test_flaskr.py](test_flaskr.py), please make sure to run t
 
 `python3 test_flaskr.py`
 
+## Deployment
+
+Heroku deployed: `https://lebistro.herokuapp.com`
+
+Here are the basic instruction on how to deploy on Heroku.
+Make sure your git repository has all the required changes in the master branch.
+```
+heroku create APP_NAME
+git remote add heroku GIT_URL_FROM_PREVIOUS_COMMAND
+heroku addons:create heroku-postgresql:hobby-dev --app lebistro
+heroku config --app APP_NAME
+!! Before running the next command make sure to update the postgres DATABASE_URL!!
+git push heroku master
+heroku run python manage.py db upgrade --app APP_NAME
+```
+Add env variables to the heroku dashboard.
+To run commands on the deployment environment use `heroku run` followed by the unix command.
+To view Heroku logs to debug, use `heroku logs`
+
+
+
+
+### Authors
+
+[Shreyaa Sridhar](https://github.com/shreyaasridhar)
+
+### Acknowledgements
+
+Udacity Nanodegree!
+
+Great amounts of Patience with deployment! :p
+
 
 
 
