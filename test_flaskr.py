@@ -3,7 +3,7 @@ import json
 import os
 from flask_sqlalchemy import SQLAlchemy
 from flask import jsonify
-from flaskr import create_app
+from app import create_app
 from models import setup_db, Ingredient, Dish, drop_create_all
 unittest.TestLoader.sortTestMethodsUsing = None
 
