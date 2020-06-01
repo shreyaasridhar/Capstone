@@ -255,7 +255,9 @@ git push heroku master
 heroku run python manage.py db upgrade --app APP_NAME
 ```
 Add env variables to the heroku dashboard.
+
 To run commands on the deployment environment use `heroku run` followed by the unix command.
+
 To view Heroku logs to debug, use `heroku logs`
 
 
