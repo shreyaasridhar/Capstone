@@ -1,1 +1,2 @@
-web: gunicorn -b :5000 app:app
+web: gunicorn app:app
+heroku scale web=1
