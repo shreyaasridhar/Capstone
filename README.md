@@ -248,7 +248,7 @@ Make sure your git repository has all the required changes in the master branch.
 ```
 heroku create APP_NAME
 git remote add heroku GIT_URL_FROM_PREVIOUS_COMMAND
-heroku addons:create heroku-postgresql:hobby-dev --app lebistro
+heroku addons:create heroku-postgresql:hobby-dev --app APP_NAME
 heroku config --app APP_NAME
 !! Before running the next command make sure to update the postgres DATABASE_URL!!
 git push heroku master
